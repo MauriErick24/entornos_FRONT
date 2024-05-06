@@ -1,0 +1,19 @@
+#tag-content {
+  display: flex;
+  background-color: #e3e3e3;
+  padding: 0.5em;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  gap: 0.5em;
+  border-left: solid 4px #77c776;
+  transition: 0.5s;
+  &:hover {
+    background-color: #77c776;
+    cursor: help;
+  }
+}
+
+/* #border {
+  background-color: blueviolet;
+  width: 5px;
+} */

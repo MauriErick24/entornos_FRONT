@@ -1,0 +1,53 @@
+.container-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  transition: 0.5s;
+}
+
+.apunte-header {
+  /* background-color: antiquewhite; */
+  display: flex;
+  justify-content: right;
+}
+
+.apunte-body {
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+  background-color: #e3e3e3;
+  height: auto;
+  border-radius: 10px;
+  padding: 2em;
+}
+
+.title-apunte {
+  width: auto;
+  min-width: 100%;
+}
+
+.text-apunte {
+  width: 100%;
+  min-height: 40em;
+}
+
+.action-buttons {
+  display: flex;
+  /* gap: 0.5em; */
+  background-color: #41a9af;
+  border-radius: 10px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+button {
+  display: flex;
+  background-color: #41a9af;
+  border: none;
+  gap: 0.3em;
+  padding: 0.7em 1.5em;
+  border-radius: 10px;
+  align-items: center;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #34878b;
+  }
+}
