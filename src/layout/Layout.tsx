@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -21,6 +22,7 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import AddIcon from "@mui/icons-material/Add";
+import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 
 const drawerWidth = 340;
 
@@ -81,15 +83,18 @@ interface Apunte {
 interface MiniDrawerProps {
   apunteList: Apunte[];
   sugeridoList: Apunte[];
+  guardadosList: Apunte[];
 }
 
 const MiniDrawer: React.FC<MiniDrawerProps> = ({
   apunteList,
+  guardadosList,
   sugeridoList,
 }) => {
   const theme = useTheme();
   const [openBar, setOpenBar] = React.useState(false);
   const [openMisApuntes, setOpenMisApuntes] = React.useState(false);
+  const [openGuardados, setOpenGuardados] = React.useState<boolean>(false);
   const [openSugeridos, setOpenSugeridos] = React.useState(false);
 
   const handleClick = (option: string) => {
@@ -100,6 +105,12 @@ const MiniDrawer: React.FC<MiniDrawerProps> = ({
     }
     if (option === "sugeridos") {
       setOpenSugeridos(!openSugeridos);
+      setOpenBar(true);
+      return;
+    }
+
+    if (option === "guardados") {
+      setOpenGuardados(!openGuardados);
       setOpenBar(true);
       return;
     }
@@ -199,9 +210,38 @@ const MiniDrawer: React.FC<MiniDrawerProps> = ({
             </ListItemButton>
           </Collapse>
 
-          <ListItemButton onClick={() => handleClick("sugeridos")}>
+          <ListItemButton onClick={() => handleClick("guardados")}>
             <ListItemIcon>
               <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Guardados" />
+            {openGuardados ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={openGuardados} timeout="auto" unmountOnExit>
+            {guardadosList.map((element, index) => (
+              <Link
+                to={`/guardados/${element.id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <List key={index} component="div" disablePadding>
+                  <ListItemButton
+                    sx={{ pl: 4, maxHeight: 50, overflow: "auto" }}
+                  >
+                    <ListItemIcon>
+                      <StarBorder />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={`${element.title}@${element.author}`}
+                    />
+                  </ListItemButton>
+                </List>
+              </Link>
+            ))}
+          </Collapse>
+
+          <ListItemButton onClick={() => handleClick("sugeridos")}>
+            <ListItemIcon>
+              <ShareOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary="Recomendados" />
             {openSugeridos ? <ExpandLess /> : <ExpandMore />}

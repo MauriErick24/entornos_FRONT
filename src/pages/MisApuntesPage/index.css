@@ -20,7 +20,12 @@
 }
 
 .title-apunte {
-  width: auto;
+  width: fit-content;
+  min-width: 100%;
+}
+
+.title-apunte-input {
+  width: fit-content;
   min-width: 100%;
 }
 

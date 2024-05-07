@@ -78,9 +78,22 @@ function App() {
     },
   ];
 
+  const guardadosList = [
+    {
+      id: 0,
+      author: "Desconocido",
+      title: "Desconocido",
+      text: "Desconocido",
+    },
+  ];
+
   return (
     <>
-      <Layout apunteList={apunteList} sugeridoList={sugeridoList} />
+      <Layout
+        apunteList={apunteList}
+        sugeridoList={sugeridoList}
+        guardadosList={guardadosList}
+      />
     </>
   );
 }

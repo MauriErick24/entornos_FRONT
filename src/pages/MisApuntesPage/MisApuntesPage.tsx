@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./index.css";
 
@@ -79,7 +79,16 @@ interface Props {}
 
 const MisApuntesPage = (props: Props) => {
   const { id } = useParams<{ id: string }>();
-  const [edit, setEdit] = useState(false);
+
+  const [apunteActual, setApunteActual] = useState<Apunte>({
+    id: 0,
+    author: "",
+    title: "",
+    text: "",
+  });
+
+  const [edit, setEdit] = useState<boolean>(false);
+
   let data: Apunte = {
     id: 0,
     author: "Desconocido",
@@ -87,17 +96,42 @@ const MisApuntesPage = (props: Props) => {
     text: "Desconocido",
   };
 
-  if (id != undefined) {
-    const idNumber = parseInt(id);
-    data = dataText[idNumber - 1];
-  }
+  useEffect(() => {
+    if (id != undefined) {
+      const idNumber = parseInt(id);
+      const apunteData = dataText[idNumber - 1];
+      setApunteActual(apunteData);
+    }
+  }, []);
+
+  const handleClickEdit = () => {
+    setEdit(!edit);
+  };
+
+  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = { ...apunteActual, title: e.target.value };
+    setApunteActual(newTitle);
+  };
+
+  const handleChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = { ...apunteActual, text: e.target.value };
+    setApunteActual(newText);
+  };
+
+  const handleEnterPressed = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter") {
+      const newTextWithEnter = apunteActual.text + "<br>";
+      const newDataText = { ...apunteActual, text: newTextWithEnter };
+      setApunteActual(newDataText);
+    }
+  };
 
   return (
     <div className="container-main">
       {/* //! aqui el header */}
       <div className="apunte-header">
         <div className="action-buttons">
-          <button onClick={() => setEdit(!edit)}>
+          <button onClick={() => handleClickEdit()}>
             <EditIcon sx={{ color: "#E2E2E2" }} />
           </button>
           <button>
@@ -109,21 +143,37 @@ const MisApuntesPage = (props: Props) => {
       <div className="apunte-body">
         {!edit ? (
           <>
-            <h2 className="title-apunte">{data.title}</h2>
+            <h2 className="title-apunte">{apunteActual.title}</h2>
           </>
         ) : (
-          <h2 className="title-apunte">
+          <h3 className="title-apunte">
             <>
-              {/* <label>titulo: </label> */}
-              <input value={data.title} />
+              <label>titulo: </label>
+              <input
+                className="title-apunte-input"
+                value={apunteActual.title}
+                onChange={handleChangeTitle}
+              />
             </>
-          </h2>
+          </h3>
         )}
 
         {!edit ? (
-          <p className="text-apunte">{data.text}</p>
+          <>
+            <p className="text-apunte">{apunteActual.text}</p>
+            {console.log(
+              "🚀 ~ handleEnterPressed ~ newDataText:",
+              apunteActual
+            )}
+          </>
         ) : (
-          <textarea className="text-apunte">{data.text}</textarea>
+          <textarea
+            className="text-apunte"
+            onChange={handleChangeText}
+            onKeyDown={handleEnterPressed}
+          >
+            {apunteActual.text}
+          </textarea>
         )}
       </div>
     </div>
